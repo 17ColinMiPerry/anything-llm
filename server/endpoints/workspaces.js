@@ -8,6 +8,7 @@ const {
 } = require("../utils/http");
 const { normalizePath, isWithin } = require("../utils/files");
 const { Workspace } = require("../models/workspace");
+const { WorkspaceTemplate } = require("../models/workspaceTemplate");
 const { Document } = require("../models/documents");
 const { DocumentVectors } = require("../models/vectors");
 const { WorkspaceChats } = require("../models/workspaceChats");
@@ -49,8 +50,36 @@ function workspaceEndpoints(app) {
     async (request, response) => {
       try {
         const user = await userFromSession(request, response);
-        const { name = null, onboardingComplete = false } = reqBody(request);
-        const { workspace, message } = await Workspace.new(name, user?.id);
+        const { name = null, onboardingComplete = false, templateSlug = null } = reqBody(request);
+
+        let additionalFields = {};
+        let template = null;
+        if (templateSlug) {
+          template = await WorkspaceTemplate.get({ slug: templateSlug });
+          if (template) {
+            const config = JSON.parse(template.config);
+            // Flatten config into additionalFields
+            additionalFields = { ...config };
+          }
+        }
+
+        const { workspace, message } = await Workspace.new(name, user?.id, additionalFields);
+
+        // If template has resources, we need to embed them into the new workspace
+        if (template && template.resources) {
+          const resources = JSON.parse(template.resources);
+          if (Array.isArray(resources) && resources.length > 0) {
+            // We do this asynchronously so we don't block the request
+            try {
+              for (const resource of resources) {
+                await Document.api.uploadToWorkspace(workspace.slug, resource);
+              }
+            } catch (err) {
+              console.error("Failed to inherit template resources:", err);
+            }
+          }
+        }
+
         await Telemetry.sendTelemetry(
           "workspace_created",
           {
@@ -238,8 +267,8 @@ function workspaceEndpoints(app) {
           message:
             failedToEmbed.length > 0
               ? `${failedToEmbed.length} documents failed to add.\n\n${errors
-                  .map((msg) => `${msg}`)
-                  .join("\n\n")}`
+                .map((msg) => `${msg}`)
+                .join("\n\n")}`
               : null,
         });
       } catch (e) {
@@ -786,11 +815,11 @@ function workspaceEndpoints(app) {
         // and is a valid thread slug.
         const threadId = !!threadSlug
           ? (
-              await WorkspaceThread.get({
-                slug: String(threadSlug),
-                workspace_id: workspace.id,
-              })
-            )?.id ?? null
+            await WorkspaceThread.get({
+              slug: String(threadSlug),
+              workspace_id: workspace.id,
+            })
+          )?.id ?? null
           : null;
         const chatsToFork = await WorkspaceChats.where(
           {

@@ -108,6 +108,9 @@ export default {
     workspaces: () => {
       return `/settings/workspaces`;
     },
+    templates: () => {
+      return `/settings/templates`;
+    },
     chats: () => {
       return "/settings/workspace-chats";
     },

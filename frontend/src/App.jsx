@@ -26,6 +26,7 @@ const WorkspaceChat = lazy(() => import("@/pages/WorkspaceChat"));
 const AdminUsers = lazy(() => import("@/pages/Admin/Users"));
 const AdminInvites = lazy(() => import("@/pages/Admin/Invitations"));
 const AdminWorkspaces = lazy(() => import("@/pages/Admin/Workspaces"));
+const AdminWorkspaceTemplates = lazy(() => import("@/pages/Admin/WorkspaceTemplates"));
 const AdminLogs = lazy(() => import("@/pages/Admin/Logging"));
 const AdminAgents = lazy(() => import("@/pages/Admin/Agents"));
 const GeneralChats = lazy(() => import("@/pages/GeneralSettings/Chats"));
@@ -259,6 +260,10 @@ export default function App() {
                     <Route
                       path="/settings/workspaces"
                       element={<ManagerRoute Component={AdminWorkspaces} />}
+                    />
+                    <Route
+                      path="/settings/templates"
+                      element={<ManagerRoute Component={AdminWorkspaceTemplates} />}
                     />
                     {/* Onboarding Flow */}
                     <Route path="/onboarding" element={<OnboardingFlow />} />

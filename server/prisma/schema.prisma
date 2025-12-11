@@ -392,3 +392,14 @@ model workspace_parsed_files {
   @@index([workspaceId])
   @@index([userId])
 }
+
+model workspace_templates {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  config      String // JSON string of the workspace configuration
+  resources   String? // JSON string of file paths to include
+  createdAt   DateTime @default(now())
+  createdBy   Int
+}

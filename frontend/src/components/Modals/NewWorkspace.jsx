@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { X } from "@phosphor-icons/react";
 import Workspace from "@/models/workspace";
+import WorkspaceTemplate from "@/models/workspaceTemplate";
 import paths from "@/utils/paths";
 import { useTranslation } from "react-i18next";
 import ModalWrapper from "@/components/ModalWrapper";
@@ -9,6 +10,16 @@ const noop = () => false;
 export default function NewWorkspaceModal({ hideModal = noop }) {
   const formEl = useRef(null);
   const [error, setError] = useState(null);
+  const [templates, setTemplates] = React.useState([]);
+
+  React.useEffect(() => {
+    async function fetchTemplates() {
+      const _templates = await WorkspaceTemplate.all();
+      setTemplates(_templates);
+    }
+    fetchTemplates();
+  }, []);
+
   const { t } = useTranslation();
   const handleCreate = async (e) => {
     setError(null);
@@ -65,6 +76,28 @@ export default function NewWorkspaceModal({ hideModal = noop }) {
                     autoFocus={true}
                   />
                 </div>
+                {templates.length > 0 && (
+                  <div>
+                    <label
+                      htmlFor="templateSlug"
+                      className="block mb-2 text-sm font-medium text-white"
+                    >
+                      Workspace Template
+                    </label>
+                    <select
+                      name="templateSlug"
+                      id="templateSlug"
+                      className="border-none bg-theme-settings-input-bg w-full text-white text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
+                    >
+                      <option value="">No Template (Default)</option>
+                      {templates.map((template) => (
+                        <option key={template.slug} value={template.slug}>
+                          {template.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
                 {error && (
                   <p className="text-red-400 text-sm">Error: {error}</p>
                 )}

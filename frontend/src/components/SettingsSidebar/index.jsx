@@ -72,11 +72,10 @@ export default function SettingsSidebar() {
           className={`z-99 fixed top-0 left-0 transition-all duration-500 w-[100vw] h-[100vh]`}
         >
           <div
-            className={`${
-              showBgOverlay
-                ? "transition-all opacity-1"
-                : "transition-none opacity-0"
-            }  duration-500 fixed top-0 left-0 bg-theme-bg-secondary bg-opacity-75 w-screen h-screen`}
+            className={`${showBgOverlay
+              ? "transition-all opacity-1"
+              : "transition-none opacity-0"
+              }  duration-500 fixed top-0 left-0 bg-theme-bg-secondary bg-opacity-75 w-screen h-screen`}
             onClick={() => setShowSidebar(false)}
           />
           <div
@@ -271,6 +270,12 @@ const SidebarOptions = ({ user = null, t }) => (
             {
               btnText: t("settings.workspaces"),
               href: paths.settings.workspaces(),
+              roles: ["admin", "manager"],
+            },
+            {
+              btnText: "Templates", // TODO: Translate
+              href: paths.settings.templates(),
+              flex: true,
               roles: ["admin", "manager"],
             },
             {
