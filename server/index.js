@@ -10,7 +10,9 @@ const path = require("path");
 const { reqBody } = require("./utils/http");
 const { systemEndpoints } = require("./endpoints/system");
 const { workspaceEndpoints } = require("./endpoints/workspaces");
-const { workspaceTemplateEndpoints } = require("./endpoints/workspaceTemplates");
+const {
+  workspaceTemplateEndpoints,
+} = require("./endpoints/workspaceTemplates");
 const { chatEndpoints } = require("./endpoints/chat");
 const { embeddedEndpoints } = require("./endpoints/embed");
 const { embedManagementEndpoints } = require("./endpoints/embedManagement");
