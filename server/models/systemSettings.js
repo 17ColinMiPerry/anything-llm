@@ -273,6 +273,9 @@ const SystemSettings = {
       // Eleven Labs TTS
       TTSElevenLabsKey: !!process.env.TTS_ELEVEN_LABS_KEY,
       TTSElevenLabsVoiceModel: process.env.TTS_ELEVEN_LABS_VOICE_MODEL,
+      // Deepgram TTS
+      TTSDeepgramKey: !!process.env.TTS_DEEPGRAM_KEY,
+      TTSDeepgramVoiceModel: process.env.TTS_DEEPGRAM_VOICE_MODEL,
       // Piper TTS
       TTSPiperTTSVoiceModel:
         process.env.TTS_PIPER_VOICE_MODEL ?? "en_US-hfc_female-medium",
@@ -709,7 +712,7 @@ const SystemSettings = {
       try {
         let url = new URL(process.env.SIMPLE_SSO_NO_LOGIN_REDIRECT);
         return url.toString();
-      } catch {}
+      } catch { }
 
       // if the no login redirect is not a valid URL or is not set, return null
       return null;

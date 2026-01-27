@@ -6,6 +6,7 @@ const { fetchApiPieModels } = require("../AiProviders/apipie");
 const { perplexityModels } = require("../AiProviders/perplexity");
 const { fireworksAiModels } = require("../AiProviders/fireworksAi");
 const { ElevenLabsTTS } = require("../TextToSpeech/elevenLabs");
+const { DeepgramTTS } = require("../TextToSpeech/deepgram");
 const { fetchNovitaModels } = require("../AiProviders/novita");
 const { parseLMStudioBasePath } = require("../AiProviders/lmStudio");
 const { parseNvidiaNimBasePath } = require("../AiProviders/nvidiaNim");
@@ -30,6 +31,7 @@ const SUPPORT_CUSTOM_MODELS = [
   "koboldcpp",
   "litellm",
   "elevenlabs-tts",
+  "deepgram-tts",
   "groq",
   "deepseek",
   "apipie",
@@ -82,6 +84,8 @@ async function getCustomModels(provider = "", apiKey = null, basePath = null) {
       return await liteLLMModels(basePath, apiKey);
     case "elevenlabs-tts":
       return await getElevenLabsModels(apiKey);
+    case "deepgram-tts":
+      return await getDeepgramModels(apiKey);
     case "groq":
       return await getGroqAiModels(apiKey);
     case "deepseek":
@@ -564,6 +568,32 @@ async function getElevenLabsModels(apiKey = null) {
   }
 
   if (models.length > 0 && !!apiKey) process.env.TTS_ELEVEN_LABS_KEY = apiKey;
+  return { models, error: null };
+}
+
+async function getDeepgramModels(apiKey = null) {
+  const models = (await DeepgramTTS.voices(apiKey)).map((model) => {
+    return {
+      id: model.canonical_name,
+      language: model.languages?.[0] || "en",
+      name: `${model.metadata?.display_name || model.name} (${model.languages?.[0] || "en"})`,
+    };
+  });
+
+  if (models.length === 0) {
+    return {
+      models: [
+        {
+          id: "aura-2-arcas-en",
+          language: "English",
+          name: "Arcas (default)",
+        },
+      ],
+      error: null,
+    };
+  }
+
+  if (models.length > 0 && !!apiKey) process.env.TTS_DEEPGRAM_KEY = apiKey;
   return { models, error: null };
 }
 

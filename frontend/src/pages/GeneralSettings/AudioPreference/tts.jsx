@@ -9,12 +9,14 @@ import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
 import ElevenLabsIcon from "@/media/ttsproviders/elevenlabs.png";
 import PiperTTSIcon from "@/media/ttsproviders/piper.png";
 import GenericOpenAiLogo from "@/media/ttsproviders/generic-openai.png";
+import DeepgramIcon from "@/media/ttsproviders/deepgram.png";
 
 import BrowserNative from "@/components/TextToSpeech/BrowserNative";
 import OpenAiTTSOptions from "@/components/TextToSpeech/OpenAiOptions";
 import ElevenLabsTTSOptions from "@/components/TextToSpeech/ElevenLabsOptions";
 import PiperTTSOptions from "@/components/TextToSpeech/PiperTTSOptions";
 import OpenAiGenericTTSOptions from "@/components/TextToSpeech/OpenAiGenericOptions";
+import DeepgramTTSOptions from "@/components/TextToSpeech/DeepgramOptions";
 
 const PROVIDERS = [
   {
@@ -37,6 +39,13 @@ const PROVIDERS = [
     logo: ElevenLabsIcon,
     options: (settings) => <ElevenLabsTTSOptions settings={settings} />,
     description: "Use ElevenLabs's text to speech voices and technology.",
+  },
+  {
+    name: "Deepgram",
+    value: "deepgram",
+    logo: DeepgramIcon,
+    options: (settings) => <DeepgramTTSOptions settings={settings} />,
+    description: "Use Deepgram's Aura text to speech voices and technology.",
   },
   {
     name: "PiperTTS",

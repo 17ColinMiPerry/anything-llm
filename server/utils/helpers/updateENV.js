@@ -633,6 +633,16 @@ const KEY_MAPPING = {
     checks: [],
   },
 
+  // TTS Deepgram
+  TTSDeepgramKey: {
+    envKey: "TTS_DEEPGRAM_KEY",
+    checks: [isNotEmpty],
+  },
+  TTSDeepgramVoiceModel: {
+    envKey: "TTS_DEEPGRAM_VOICE_MODEL",
+    checks: [],
+  },
+
   // PiperTTS Local
   TTSPiperTTSVoiceModel: {
     envKey: "TTS_PIPER_VOICE_MODEL",
@@ -866,6 +876,7 @@ function supportedTTSProvider(input = "") {
     "native",
     "openai",
     "elevenlabs",
+    "deepgram",
     "piper_local",
     "generic-openai",
   ].includes(input);

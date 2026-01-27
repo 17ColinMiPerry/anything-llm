@@ -7,6 +7,9 @@ function getTTSProvider() {
     case "elevenlabs":
       const { ElevenLabsTTS } = require("./elevenLabs");
       return new ElevenLabsTTS();
+    case "deepgram":
+      const { DeepgramTTS } = require("./deepgram");
+      return new DeepgramTTS();
     case "generic-openai":
       const { GenericOpenAiTTS } = require("./openAiGeneric");
       return new GenericOpenAiTTS();
