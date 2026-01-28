@@ -572,7 +572,7 @@ async function getElevenLabsModels(apiKey = null) {
 }
 
 async function getDeepgramModels(apiKey = null) {
-  const models = (await DeepgramTTS.voices(apiKey)).map((model) => {
+  const models = (await DeepgramTTS.voices()).map((model) => {
     return {
       id: model.canonical_name,
       language: model.languages?.[0] || "en",
