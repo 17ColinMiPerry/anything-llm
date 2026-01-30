@@ -5,7 +5,9 @@ import LLMItem from "@/components/LLMSelection/LLMItem";
 import { CaretUpDown, MagnifyingGlass, X } from "@phosphor-icons/react";
 import CTAButton from "@/components/lib/CTAButton";
 import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
+import DeepgramIcon from "@/media/ttsproviders/deepgram.png";
 import BrowserNative from "@/components/SpeechToText/BrowserNative";
+import DeepgramOptions from "@/components/SpeechToText/DeepgramOptions";
 
 const PROVIDERS = [
   {
@@ -14,6 +16,13 @@ const PROVIDERS = [
     logo: AnythingLLMIcon,
     options: (settings) => <BrowserNative settings={settings} />,
     description: "Uses your browser's built in STT service if supported.",
+  },
+  {
+    name: "Deepgram",
+    value: "deepgram",
+    logo: DeepgramIcon,
+    options: (settings) => <DeepgramOptions settings={settings} />,
+    description: "Use Deepgram's STT for audio transcription.",
   },
 ];
 

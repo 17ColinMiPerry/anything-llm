@@ -841,6 +841,25 @@ const System = {
       });
   },
 
+  /**
+   * Fetches the STT API key for realtime WebSocket connection.
+   * @returns {Promise<{provider: string, apiKey: string | null}>}
+   */
+  getSTTKey: async function () {
+    return await fetch(`${API_BASE}/system/stt-key`, {
+      method: "GET",
+      headers: baseHeaders(),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Could not fetch STT key.");
+        return res.json();
+      })
+      .catch((e) => {
+        console.error(e);
+        return { provider: "native", apiKey: null };
+      });
+  },
+
   experimentalFeatures: {
     liveSync: LiveDocumentSync,
     agentPlugins: AgentPlugins,

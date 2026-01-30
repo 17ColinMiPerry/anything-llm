@@ -90,6 +90,31 @@ function systemEndpoints(app) {
     }
   });
 
+  /**
+   * Returns the STT API key for the configured provider.
+   * Uses STT-specific key if set, otherwise falls back to TTS key.
+   */
+  app.get(
+    "/system/stt-key",
+    [validatedRequest],
+    async (_, response) => {
+      try {
+        const provider = process.env.SPEECH_TO_TEXT_PROVIDER || "native";
+        let apiKey = null;
+
+        if (provider === "deepgram") {
+          // Use STT-specific key if set, otherwise fall back to TTS key
+          apiKey = process.env.STT_DEEPGRAM_KEY || process.env.TTS_DEEPGRAM_KEY || null;
+        }
+
+        response.status(200).json({ provider, apiKey });
+      } catch (e) {
+        console.error(e.message, e);
+        response.sendStatus(500).end();
+      }
+    }
+  );
+
   app.get(
     "/system/check-token",
     [validatedRequest],

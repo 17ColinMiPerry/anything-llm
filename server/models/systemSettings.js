@@ -264,16 +264,18 @@ const SystemSettings = {
 
       // --------------------------------------------------------
       // TTS/STT  Selection Settings & Configs
-      // - Currently the only 3rd party is OpenAI or the native browser-built in
       // --------------------------------------------------------
       TextToSpeechProvider: process.env.TTS_PROVIDER || "native",
+      SpeechToTextProvider: process.env.SPEECH_TO_TEXT_PROVIDER || "native",
+      // STT Deepgram - uses own key or falls back to TTS key
+      STTDeepgramKey: !!process.env.STT_DEEPGRAM_KEY,
       TTSOpenAIKey: !!process.env.TTS_OPEN_AI_KEY,
       TTSOpenAIVoiceModel: process.env.TTS_OPEN_AI_VOICE_MODEL,
 
       // Eleven Labs TTS
       TTSElevenLabsKey: !!process.env.TTS_ELEVEN_LABS_KEY,
       TTSElevenLabsVoiceModel: process.env.TTS_ELEVEN_LABS_VOICE_MODEL,
-      // Deepgram TTS
+      // Deepgram TTS (API key shared with STT)
       TTSDeepgramKey: !!process.env.TTS_DEEPGRAM_KEY,
       TTSDeepgramVoiceModel: process.env.TTS_DEEPGRAM_VOICE_MODEL,
       // Piper TTS

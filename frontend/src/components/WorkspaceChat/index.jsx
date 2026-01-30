@@ -11,6 +11,7 @@ import {
   TTSProvider,
   useWatchForAutoPlayAssistantTTSResponse,
 } from "../contexts/TTSProvider";
+import { STTProvider } from "../contexts/STTProvider";
 
 export default function WorkspaceChat({ loading, workspace }) {
   useWatchForAutoPlayAssistantTTSResponse();
@@ -79,9 +80,11 @@ export default function WorkspaceChat({ loading, workspace }) {
   setEventDelegatorForCodeSnippets();
   return (
     <TTSProvider>
-      <DnDFileUploaderProvider workspace={workspace} threadSlug={threadSlug}>
-        <ChatContainer workspace={workspace} knownHistory={history} />
-      </DnDFileUploaderProvider>
+      <STTProvider>
+        <DnDFileUploaderProvider workspace={workspace} threadSlug={threadSlug}>
+          <ChatContainer workspace={workspace} knownHistory={history} />
+        </DnDFileUploaderProvider>
+      </STTProvider>
     </TTSProvider>
   );
 }

@@ -538,6 +538,18 @@ const KEY_MAPPING = {
     postUpdate: [],
   },
 
+  // STT (Speech-to-Text) providers for real-time transcription
+  // Deepgram STT can use its own key, or falls back to TTS_DEEPGRAM_KEY
+  SpeechToTextProvider: {
+    envKey: "SPEECH_TO_TEXT_PROVIDER",
+    checks: [isNotEmpty, supportedSTTProvider],
+    postUpdate: [],
+  },
+  STTDeepgramKey: {
+    envKey: "STT_DEEPGRAM_KEY",
+    checks: [], // Optional - falls back to TTS key if empty
+  },
+
   // System Settings
   AuthToken: {
     envKey: "AUTH_TOKEN",
@@ -937,6 +949,13 @@ function supportedTranscriptionProvider(input = "") {
   return validSelection
     ? null
     : `${input} is not a valid transcription model provider.`;
+}
+
+function supportedSTTProvider(input = "") {
+  const validSelection = ["native", "deepgram"].includes(input);
+  return validSelection
+    ? null
+    : `${input} is not a valid speech-to-text provider.`;
 }
 
 function validGeminiSafetySetting(input = "") {
